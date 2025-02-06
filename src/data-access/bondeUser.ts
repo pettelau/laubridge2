@@ -20,11 +20,24 @@ export const getAvailableBondeUsers = async () => {
 };
 
 export const connectUserToBondeUser = async (
-  userId: number,
+  kindeUserId: string,
   bondeUserId: number
 ) => {
+  const userId = await prisma.user.findUnique({
+    where: {
+      kindeId: kindeUserId,
+    },
+    select: {
+      id: true,
+    },
+  });
+
+  if (!userId) {
+    throw new Error("User not found");
+  }
+
   return await prisma.bondeUser.update({
     where: { id: bondeUserId },
-    data: { userId },
+    data: { userId: userId.id },
   });
 };

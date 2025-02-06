@@ -19,8 +19,9 @@ const ConnectUserToBundeUser = ({
   const { user } = useKindeBrowserClient();
 
   const handleConnectUser = () => {
+    if (!selectedUser || !user) return;
     startTransition(async () => {
-      await connectUserToBondeUser(user.id, selectedUser?.id);
+      await connectUserToBondeUser(user.id, selectedUser.id);
     });
   };
 
@@ -53,7 +54,9 @@ const ConnectUserToBundeUser = ({
           actionText="Koble til bruker"
           onAction={handleConnectUser}
         >
-          <Button disabled={!selectedUser}>Koble til bruker</Button>
+          <Button disabled={!selectedUser || isPending}>
+            Koble til bruker
+          </Button>
         </ConfirmationModal>
       </div>
     </div>

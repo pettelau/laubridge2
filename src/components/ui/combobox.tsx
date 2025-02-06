@@ -1,6 +1,6 @@
+/* eslint-disable */
 "use client";
 
-import * as React from "react";
 import { Check, ChevronsUpDown } from "lucide-react";
 
 import { cn } from "@/lib/utils";
@@ -18,6 +18,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { useState } from "react";
 
 interface ComboboxItem {
   value: string;
@@ -43,8 +44,8 @@ export function Combobox({
   className,
   notFoundText = "Ingen element funnet.",
 }: ComboboxProps) {
-  const [open, setOpen] = React.useState(false);
-  const [searchQuery, setSearchQuery] = React.useState("");
+  const [open, setOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
 
   const filteredItems = items.filter((item) =>
     item.label.toLowerCase().includes(searchQuery.toLowerCase())

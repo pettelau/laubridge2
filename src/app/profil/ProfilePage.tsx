@@ -1,4 +1,5 @@
 import { User, BondeUser } from "@prisma/client";
+
 import Image from "next/image";
 import { ProfileStats } from "./ProfileStats";
 import { ConnectUserToBundeUser } from "./ConnectUserToBundeUser";
@@ -10,8 +11,6 @@ interface ProfileClientProps {
 }
 
 const ProfilePage = async ({ user }: ProfileClientProps) => {
-  //   const [isEditing, setIsEditing] = useState(false);
-
   const bondeUsers = await getAvailableBondeUsers();
 
   return (
