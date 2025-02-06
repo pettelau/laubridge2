@@ -1,0 +1,93 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum GameStatus {
+  IN_PROGRESS
+  FINISHED
+}
+
+enum UserRole {
+  ADMIN
+  PLAYER
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String
+  firstName String?
+  lastName  String?
+  picture   String?
+  kindeId   String   @unique
+  role      UserRole @default(PLAYER)
+  createdAt DateTime @default(now())
+  lastLogin DateTime @default(now())
+
+  bondeUser BondeUser?
+}
+
+model BondeUser {
+  id          Int          @id @default(autoincrement())
+  nickname    String
+  firstName   String?
+  lastName    String?
+  isFavorite  Boolean      @default(false)
+  gamePlayers GamePlayer[]
+
+  user   User? @relation(fields: [userId], references: [id], onDelete: SetNull)
+  userId Int?  @unique
+}
+
+model Game {
+  id                  Int          @id @default(autoincrement())
+  status              GameStatus   @default(IN_PROGRESS)
+  moneyMultiplier     Decimal
+  extraCostLoser      Int?
+  extraCostSecondLast Int?
+  createdOn           DateTime     @default(now())
+  gamePlayers         GamePlayer[]
+  rounds              Round[]
+}
+
+model GamePlayer {
+  id           Int           @id @default(autoincrement())
+  gameId       Int
+  playerId     Int
+  score        Int           @default(0)
+  bleedings    Int?          @default(0)
+  warnings     Int?          @default(0)
+  Game         Game          @relation(fields: [gameId], references: [id], onDelete: Cascade)
+  bondeUser    BondeUser     @relation(fields: [playerId], references: [id], onDelete: Cascade)
+  playerScores PlayerScore[]
+
+  @@unique([gameId, playerId])
+}
+
+model Round {
+  id             Int           @id @default(autoincrement())
+  gameId         Int
+  numCards       Int
+  dealerIndex    Int
+  isSettled      Boolean       @default(false)
+  isTriumphRound Boolean       @default(false)
+  Game           Game          @relation(fields: [gameId], references: [id], onDelete: Cascade)
+  playerScores   PlayerScore[]
+}
+
+model PlayerScore {
+  id           Int        @id @default(autoincrement())
+  roundId      Int
+  gamePlayerId Int
+  numTricks    Int        @default(0)
+  stand        Boolean    @default(false)
+  Round        Round      @relation(fields: [roundId], references: [id], onDelete: Cascade)
+  gamePlayer   GamePlayer @relation(fields: [gamePlayerId], references: [id], onDelete: Cascade)
+}

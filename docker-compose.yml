@@ -1,0 +1,18 @@
+version: '3.8'
+services:
+  db:
+    image: postgres:15
+    container_name: local_postgres_laubridge
+    restart: always
+    ports:
+      - '5432:5432'
+    environment:
+      POSTGRES_USER: laubridge
+      POSTGRES_PASSWORD: laubridge
+      POSTGRES_DB: laubridge
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
+  
