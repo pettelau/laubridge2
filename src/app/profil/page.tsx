@@ -3,9 +3,8 @@ import {
   LoginLink,
 } from "@kinde-oss/kinde-auth-nextjs/server";
 import { redirect } from "next/navigation";
-import prisma from "../../../prisma/prisma";
 import { ProfilePage } from "./ProfilePage";
-
+import prisma from "@/lib/prisma";
 async function getUser(kindeId: string) {
   return await prisma.user.findUnique({
     where: { kindeId },

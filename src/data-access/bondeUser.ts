@@ -1,6 +1,5 @@
 "use server";
-import prisma from "../../prisma/prisma";
-
+import prisma from "@/lib/prisma";
 export const getBondeUser = async (userId: number) => {
   return await prisma.bondeUser.findUnique({
     where: { userId },
