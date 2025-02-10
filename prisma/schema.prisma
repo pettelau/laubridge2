@@ -21,17 +21,40 @@ enum UserRole {
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
-  email     String
-  firstName String?
-  lastName  String?
-  picture   String?
-  kindeId   String   @unique
-  role      UserRole @default(PLAYER)
-  createdAt DateTime @default(now())
-  lastLogin DateTime @default(now())
+  id                     Int       @id @default(autoincrement())
+  email                  String
+  firstName              String?
+  lastName               String?
+  picture                String?
+  statusMessage          String?
+  statusMessageUpdatedAt DateTime? @default(now())
+  kindeId                String    @unique
+  role                   UserRole  @default(PLAYER)
+  createdAt              DateTime  @default(now())
+  lastLogin              DateTime  @default(now())
 
-  bondeUser BondeUser?
+  bondeUser    BondeUser?
+  createdClubs Club[]
+}
+
+model BondeUserClub {
+  id          Int     @id @default(autoincrement())
+  bondeUserId Int
+  clubId      Int
+  isAccepted  Boolean @default(false)
+
+  bondeUser BondeUser @relation(fields: [bondeUserId], references: [id], onDelete: Cascade)
+  club      Club      @relation(fields: [clubId], references: [id], onDelete: Cascade)
+}
+
+model Club {
+  id          Int     @id @default(autoincrement())
+  name        String
+  description String?
+
+  creator       User            @relation(fields: [creatorId], references: [id], onDelete: Cascade)
+  creatorId     Int
+  bondeUserClub BondeUserClub[]
 }
 
 model BondeUser {
@@ -42,8 +65,9 @@ model BondeUser {
   isFavorite  Boolean      @default(false)
   gamePlayers GamePlayer[]
 
-  user   User? @relation(fields: [userId], references: [id], onDelete: SetNull)
-  userId Int?  @unique
+  user   User?           @relation(fields: [userId], references: [id], onDelete: SetNull)
+  userId Int?            @unique
+  clubs  BondeUserClub[]
 }
 
 model Game {

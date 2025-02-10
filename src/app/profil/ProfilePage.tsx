@@ -5,6 +5,7 @@ import { ProfileStats } from "./ProfileStats";
 import { ConnectUserToBundeUser } from "./ConnectUserToBundeUser";
 import { LogoutComponent } from "./LogoutComponent";
 import { getAvailableBondeUsers } from "@/data-access/bondeUser";
+import { StatusMessageSection } from "./StatusMessageSection";
 
 interface ProfileClientProps {
   user: User & { bondeUser: BondeUser | null };
@@ -57,16 +58,11 @@ const ProfilePage = async ({ user }: ProfileClientProps) => {
                 <LogoutComponent />
               </div>
 
-              {/* Status/Thought Bubble */}
-              <div className="bg-blue-50 p-4 rounded-lg relative">
-                <div className="absolute -top-2 left-4 w-4 h-4 bg-blue-50 transform rotate-45"></div>
-                <p className="text-gray-700 italic">
-                  &quot;På jakt etter den neste store gevinsten! 🎲&quot;
-                </p>
-                <p className="text-xs text-gray-500 mt-1">
-                  Oppdatert for 2 timer siden
-                </p>
-              </div>
+              <StatusMessageSection
+                userId={user.id}
+                initialMessage={user.statusMessage}
+                updatedAt={user.statusMessageUpdatedAt}
+              />
             </div>
 
             {user.bondeUser ? (

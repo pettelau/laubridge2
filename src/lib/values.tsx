@@ -3,6 +3,7 @@ import {
   ClubIcon,
   GlobeIcon,
   HistoryIcon,
+  PlusIcon,
   UsersIcon,
 } from "lucide-react";
 
@@ -34,6 +35,23 @@ export const MENU_ITEMS: MenuItem[] = [
         description: "Se gjennom tidligere runder",
         href: "/spill",
         icon: <HistoryIcon />,
+      },
+    ],
+  },
+  {
+    title: "Klubber",
+    subItems: [
+      {
+        title: "Klubber",
+        description: "Se gjennom alle klubber",
+        href: "/klubber",
+        icon: <UsersIcon />,
+      },
+      {
+        title: "Ny klubb",
+        description: "Opprett en ny klubb",
+        href: "/klubber/opprett",
+        icon: <PlusIcon />,
       },
     ],
   },

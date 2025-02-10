@@ -23,6 +23,7 @@ import { useState } from "react";
 interface ComboboxItem {
   value: string;
   label: string;
+  disabled?: boolean;
 }
 
 interface ComboboxProps {
@@ -47,10 +48,6 @@ export function Combobox({
   const [open, setOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
 
-  const filteredItems = items.filter((item) =>
-    item.label.toLowerCase().includes(searchQuery.toLowerCase())
-  );
-
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
@@ -66,37 +63,55 @@ export function Combobox({
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-[200px] p-0">
-        <Command>
+      <PopoverContent className="w-full p-0">
+        <Command className="w-full">
           <CommandInput
             placeholder={searchPlaceholder}
             value={searchQuery}
             onValueChange={setSearchQuery}
+            className="w-full"
           />
           <CommandList>
             <CommandEmpty>{notFoundText}</CommandEmpty>
             <CommandGroup>
-              {filteredItems.map((item) => (
-                <CommandItem
-                  key={item.value}
-                  value={item.label}
-                  onSelect={(currentValue: string) => {
-                    const selectedItem = items.find(
-                      (item) => item.label === currentValue
-                    );
-                    onChange(selectedItem?.value || "");
-                    setOpen(false);
-                  }}
-                >
-                  <Check
+              {[...items]
+                .sort((a, b) => a.label.localeCompare(b.label))
+                .filter((item) =>
+                  item.label.toLowerCase().includes(searchQuery.toLowerCase())
+                )
+                .map((item) => (
+                  <CommandItem
+                    key={item.value}
+                    value={item.label}
+                    onSelect={(currentValue: string) => {
+                      if (item.disabled) return;
+
+                      const selectedItem = items.find(
+                        (item) => item.label === currentValue
+                      );
+                      if (selectedItem?.value === value) {
+                        onChange("");
+                        setOpen(false);
+                        return;
+                      }
+                      onChange(selectedItem?.value || "");
+                      setOpen(false);
+                    }}
+                    disabled={item.disabled}
                     className={cn(
-                      "mr-2 h-4 w-4",
-                      value === item.value ? "opacity-100" : "opacity-0"
+                      item.disabled && "opacity-50 cursor-not-allowed"
                     )}
-                  />
-                  {item.label}
-                </CommandItem>
-              ))}
+                  >
+                    <Check
+                      className={cn(
+                        "mr-2 h-4 w-4",
+                        value === item.value ? "opacity-100" : "opacity-0"
+                      )}
+                    />
+                    {item.label}
+                    {item.disabled && " (allerede valgt)"}
+                  </CommandItem>
+                ))}
             </CommandGroup>
           </CommandList>
         </Command>

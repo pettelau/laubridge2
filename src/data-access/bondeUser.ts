@@ -10,6 +10,14 @@ export const getBondeUsers = async () => {
   return await prisma.bondeUser.findMany();
 };
 
+export const getBondeUsersWithUser = async () => {
+  return await prisma.bondeUser.findMany({
+    include: {
+      user: true,
+    },
+  });
+};
+
 export const getAvailableBondeUsers = async () => {
   return await prisma.bondeUser.findMany({
     where: {

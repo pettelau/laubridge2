@@ -32,7 +32,11 @@ export const FullScreenMenu = ({ onClose }: FullScreenMenuProps) => {
                   {item.subItems.map((subItem) => {
                     return (
                       <div className="pb-2 hover:bg-accent" key={subItem.title}>
-                        <Link href={subItem.href} className="pl-4 font-medium">
+                        <Link
+                          onClick={onClose}
+                          href={subItem.href}
+                          className="pl-4 font-medium"
+                        >
                           <div className="flex flex-row gap-3">
                             <div className="text-[30px] flex justify-center items-center">
                               {subItem.icon}
