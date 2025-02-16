@@ -32,11 +32,9 @@ export const NavBar = () => {
   };
 
   return (
-    <div className="flex flex-grow mt-3 sm:mx-24 xs:mx-4">
-      <Link className="flex items-center" href="/">
-        <div className="items-center font-semibold hidden sm:flex">
-          LauBridge
-        </div>
+    <div className="flex flex-grow sm:justify-center justify-between mt-3 sm:mx-24 xs:mx-4">
+      <Link className="hidden sm:flex items-center" href="/">
+        <div className="items-center font-semibold">LauBridge</div>
       </Link>
       <div className="sm:flex-grow hidden sm:flex">
         <NavigationMenu className="mx-auto">
@@ -75,18 +73,21 @@ export const NavBar = () => {
           </NavigationMenuList>
         </NavigationMenu>
       </div>
-      <div className="flex sm:hidden ml-4 items-center" onClick={toggleMenu}>
+      <div
+        className="flex justify-center items-center sm:hidden ml-3"
+        onClick={toggleMenu}
+      >
         <MenuIcon />
       </div>
       {isMobileMenuOpen && <FullScreenMenu onClose={toggleMenu} />}
       <Link
-        className="sm:hidden flex-grow items-center flex justify-center"
+        className="sm:hidden top-5 absolute left-1/2 transform -translate-x-1/2"
         href="/"
       >
-        <div className="flex items-center sm:hidden">LauBridge</div>
+        <div className="flex sm:hidden">LauBridge</div>
       </Link>
 
-      <div>
+      <div className="flex">
         <NavigationMenu>
           <NavigationMenuList>
             <NavigationMenuItem className="justify-end">

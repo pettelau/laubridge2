@@ -34,3 +34,23 @@ export type ClubWithUsers = Prisma.ClubGetPayload<{
     };
   };
 }>;
+
+export type GameWithPlayers = Prisma.GameGetPayload<{
+  include: {
+    gamePlayers: {
+      include: {
+        bondeUser: {
+          include: {
+            user: true;
+          };
+        };
+      };
+    };
+  };
+}>;
+
+export type RoundWithRelations = Prisma.RoundGetPayload<{
+  include: {
+    playerScores: true;
+  };
+}>;

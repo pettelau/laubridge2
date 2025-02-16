@@ -73,7 +73,7 @@ model BondeUser {
 model Game {
   id                  Int          @id @default(autoincrement())
   status              GameStatus   @default(IN_PROGRESS)
-  moneyMultiplier     Decimal
+  moneyMultiplier     Int
   extraCostLoser      Int?
   extraCostSecondLast Int?
   createdOn           DateTime     @default(now())
